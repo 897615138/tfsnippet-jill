@@ -370,10 +370,11 @@ class TrainLoop(DisposableContext):
         Yields:
             int: The epoch counter (starting from 1).
         """
+
         def loop_condition():
             return (
-                (self._max_epoch is None or self._epoch < self._max_epoch) and
-                (self._max_step is None or self._step < self._max_step)
+                    (self._max_epoch is None or self._epoch < self._max_epoch) and
+                    (self._max_step is None or self._step < self._max_step)
             )
 
         self._require_entered()
@@ -411,6 +412,7 @@ class TrainLoop(DisposableContext):
                 the tuple of ``(step counter, batch data)`` if `data_generator`
                 is specified.
         """
+
         def loop_condition():
             return self._max_step is None or self._step < self._max_step
 
@@ -553,7 +555,8 @@ class TrainLoop(DisposableContext):
                 else:
                     self._is_best_valid_metric = False
                 if self._early_stopping:
-                     self._early_stopping.update(v, self.step)
+                    self._early_stopping.update(v, self.step)
+
         if self.valid_metric_name:
             if metrics:
                 update_valid_metric(metrics)
@@ -571,11 +574,11 @@ class TrainLoop(DisposableContext):
 
     def println(self, message, with_tag=False):
         """
-        Print `message` via `print_function`.
+        打印
 
         Args:
-            message (str): Message to be printed.
-            with_tag (bool): Whether or not to add the epoch & step tag?
+            message (str): 内容
+            with_tag (bool): 是否要加 epoch & step 标签?
                 (default :obj:`False`)
         """
         self._require_entered()
@@ -600,6 +603,7 @@ class TrainLoop(DisposableContext):
                         tags.append('ETA {}'.format(humanize_duration(eta)))
             message = '[{}] {}'.format(', '.join(tags), message)
         self._print_func(message)
+        return message
 
     def print_training_summary(self):
         """
@@ -621,18 +625,12 @@ class TrainLoop(DisposableContext):
 
     def print_logs(self):
         """
-        Print the training logs.
+        打印训练日志。
 
-        This method will print the collected metrics.  If there's an
-        active step loop, it will print metrics from the step metrics
-        collector.  Otherwise if there's only an epoch loop, it will
-        print metrics from the epoch metrics accumulator.
+        此方法将打印收集到的指标。如果存在一个活动的步骤循环，它将从步骤指标收集器打印指标。否则，如果只有一个epoch循环，它将从epoch度量累加器打印度量。
 
-        Note it must be called at the end of an epoch or a step.
-        This is because the metrics of corresponding loop context will be
-        cleared after the logs are printed.
-        Moreover, the epoch or step timer will be committed as metric
-        immediately when this method is called, before printing the logs.
+        注意，它必须在一个时代或一个阶段的结束时被称为。这是因为相应循环上下文的度量值将在日志打印后被清除。此外，epoch或step timer将作为度量值提交
+        当调用此方法时，在打印日志之前立即执行。
         """
         self._require_entered()
         metrics = None
@@ -646,9 +644,10 @@ class TrainLoop(DisposableContext):
             self._require_context()
 
         best_mark = ' (*)' if self._is_best_valid_metric else ''
-        self.println(metrics.format_logs() + best_mark, with_tag=True)
+        message = self.println(metrics.format_logs() + best_mark, with_tag=True)
         self._is_best_valid_metric = False
         metrics.clear()
+        return message
 
 
 TrainLoopContext = TrainLoop  # legacy alias for TrainLoop

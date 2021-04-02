@@ -39,7 +39,7 @@ install_requires = [s for s in requirements_list if not s.startswith('git+')]
 
 
 setup(
-    name='TFSnippet',
+    name='tfsnippet-jill',
     version=version,
     url='https://github.com/897615138/tfsnippet-jill/',
     license='MIT',
