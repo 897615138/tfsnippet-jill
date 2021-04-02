@@ -229,10 +229,10 @@ class MetricLogger(object):
 
     def format_logs(self):
         """
-        Format the metric statistics as human readable strings.
+        将度量统计数据格式化为人类可读的字符串。
 
         Returns:
-            str: The formatted metric statistics.
+            str: 格式化的度量统计信息。
         """
         buf = []
         for key in self._formatter.sort_metrics(six.iterkeys(self._metrics)):

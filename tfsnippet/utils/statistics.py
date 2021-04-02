@@ -38,7 +38,7 @@ class StatisticsCollector(object):
 
     @property
     def mean(self):
-        """Get the mean of the values, i.e., :math:`\\mathrm{E}[X]`."""
+        """获得值得均值, i.e., :math:`\\mathrm{E}[X]`."""
         return self._mean
 
     @property
@@ -56,7 +56,7 @@ class StatisticsCollector(object):
     @property
     def stddev(self):
         """
-        Get the std of the values, i.e., :math:`\\sqrt{\\operatorname{Var}[X]}`.
+        获得值的标准差, i.e., :math:`\\sqrt{\\operatorname{Var}[X]}`.
         """
         return math.sqrt(self.var)
 
@@ -72,7 +72,7 @@ class StatisticsCollector(object):
 
     @property
     def counter(self):
-        """Get the counter of collected values."""
+        """获取收集值的计数器。"""
         return self._counter
 
     def collect(self, values, weight=1.):

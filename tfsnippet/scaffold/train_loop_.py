@@ -601,7 +601,7 @@ class TrainLoop(DisposableContext):
                     eta = self._eta.get_eta(progress)
                     if eta is not None:
                         tags.append('ETA {}'.format(humanize_duration(eta)))
-            message = '[{}] {}'.format(', '.join(tags), message)
+            message = '[{}]\n\t{}'.format(', '.join(tags), message)
         if with_log:
             self._print_func(message)
         return message
