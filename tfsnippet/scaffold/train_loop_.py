@@ -582,6 +582,7 @@ class TrainLoop(DisposableContext):
                 (default :obj:`False`)
         """
         self._require_entered()
+        suffix = ""
         if with_tag:
             def format_tag(v, max_v, name):
                 if max_v is not None:
@@ -601,10 +602,11 @@ class TrainLoop(DisposableContext):
                     eta = self._eta.get_eta(progress)
                     if eta is not None:
                         tags.append('ETA {}'.format(humanize_duration(eta)))
-            message = '[{}]\n\t{}'.format(', '.join(tags), message)
+            suffix = '[{}]'.format(', '.join(tags))
         if with_log:
+            self._print_func(suffix)
             self._print_func(message)
-        return message
+        return suffix, message
 
     def print_training_summary(self):
         """
@@ -645,10 +647,10 @@ class TrainLoop(DisposableContext):
             self._require_context()
 
         best_mark = ' (*)' if self._is_best_valid_metric else ''
-        message = self.println(metrics.format_logs() + best_mark, with_tag=True, with_log=with_log)
+        suffix,message = self.println(metrics.format_logs() + best_mark, with_tag=True, with_log=with_log)
         self._is_best_valid_metric = False
         metrics.clear()
-        return message
+        return suffix,message
 
 
 TrainLoopContext = TrainLoop  # legacy alias for TrainLoop
