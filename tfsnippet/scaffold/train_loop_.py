@@ -572,7 +572,7 @@ class TrainLoop(DisposableContext):
         self._require_entered()
         self._summary_writer.add_summary(summary, global_step=self.step)
 
-    def println(self, message, with_tag=False):
+    def println(self, message, with_tag=False, with_log=True):
         """
         打印
 
@@ -602,7 +602,8 @@ class TrainLoop(DisposableContext):
                     if eta is not None:
                         tags.append('ETA {}'.format(humanize_duration(eta)))
             message = '[{}] {}'.format(', '.join(tags), message)
-        self._print_func(message)
+        if with_log:
+            self._print_func(message)
         return message
 
     def print_training_summary(self):
@@ -623,7 +624,7 @@ class TrainLoop(DisposableContext):
         ))
         self.println('')
 
-    def print_logs(self):
+    def print_logs(self, with_log=True):
         """
         打印训练日志。
 
@@ -644,7 +645,7 @@ class TrainLoop(DisposableContext):
             self._require_context()
 
         best_mark = ' (*)' if self._is_best_valid_metric else ''
-        message = self.println(metrics.format_logs() + best_mark, with_tag=True)
+        message = self.println(metrics.format_logs() + best_mark, with_tag=True, with_log=with_log)
         self._is_best_valid_metric = False
         metrics.clear()
         return message
